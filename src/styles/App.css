@@ -1,0 +1,23 @@
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  max-width: 1600px;
+  min-width: 1200px;
+  background-color: #F5F5F8;
+  margin: auto;
+}
+
+* {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 20px;
+  box-sizing: border-box;
+}
+
+#root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
