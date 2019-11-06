@@ -4,23 +4,24 @@ export enum FileAccept {
   VIDEO = "video/*",
 }
 
-interface FileInterface {
+interface SystemDialogInterface {
   accept?: FileAccept;
   maxSize?: number;
   onFileLoaded: (file: File) => void;
   children: (openDialog: () => void) => JSX.Element;
 }
 
-const FileLoader = ({
+function SystemDialog({
   maxSize,
   accept,
   children,
   onFileLoaded,
-}: FileInterface) => {
+}: SystemDialogInterface) {
   const file = React.useRef<HTMLInputElement>();
   React.useEffect(() => {
     file.current = document.createElement("input");
     const input = file.current;
+    input.style.display = "none";
     input.accept = accept;
     input.type = "file";
     input.onchange = event => {
@@ -35,10 +36,10 @@ const FileLoader = ({
   }, [onFileLoaded]);
 
   return children(() => file.current && file.current.click());
-};
+}
 
-FileLoader.defaultProps = {
+SystemDialog.defaultProps = {
   accept: FileAccept.VIDEO,
 };
 
-export default React.memo(FileLoader);
+export default React.memo(SystemDialog);

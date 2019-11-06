@@ -1,0 +1,9 @@
+/src
+/public
+/.git
+/node_modules
+/.idea
+package-lock.json
+.Dockerignore
+build.sh
+Dockerfile
