@@ -24,11 +24,11 @@ const StyledCode = styled.code`
 `;
 
 export default React.memo(function() {
+  const logRef = React.useRef<HTMLElement>(null);
   const {
     ffmpegLoaded,
     selectedFiles,
     commandApi,
-    logs,
     selectedFilesNotEmpty,
     localFiles,
     toggleSelectFile,
@@ -36,7 +36,7 @@ export default React.memo(function() {
     downloadFile,
     removeFile,
     run,
-  } = mainHook();
+  } = mainHook(logRef);
 
   return (
     <Template
@@ -118,7 +118,7 @@ export default React.memo(function() {
             <Box flex={1} padding="18px">
               123
             </Box>
-            <StyledCode dangerouslySetInnerHTML={{ __html: logs }} />
+            <StyledCode ref={logRef} />
           </Box>
         </Box>
       )}

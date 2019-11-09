@@ -27,7 +27,7 @@ function getCommandString(command: CommandInterface) {
 export default function useCommand() {
   const [command, setCommand] = React.useState<CommandInterface>(() => ({
     inputs: [],
-    output: ".mp4",
+    output: "mp4",
     arguments: {},
   }));
 

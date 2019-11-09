@@ -32,6 +32,7 @@ RUN emcc \
   -s EXTRA_EXPORTED_RUNTIME_METHODS="[cwrap, FS, getValue, setValue]" \
   -s TOTAL_MEMORY=512MB \
   -s ALLOW_MEMORY_GROWTH=1 \
+  -s BUILD_AS_WORKER=1 \
   -s SAFE_HEAP=1 \
   -O3
 

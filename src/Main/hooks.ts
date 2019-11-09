@@ -1,22 +1,32 @@
-import React from "react";
-import { append, omit, remove, propEq } from "ramda";
+import React, { MutableRefObject } from "react";
+import { append, omit, remove, propEq, prop } from "ramda";
 
 import { useFFMPEG } from "./ffmpeg/useFFMPEG";
 
 import { LocalFileInterface } from "./types";
 import { useForceUpdate } from "./helpers";
-import FFMPEG from "./ffmpeg/ffmpeg";
+import FFMPEG from "./ffmpeg/library/ffmpeg";
 
-export default function() {
+export default function(ref: MutableRefObject<HTMLElement>) {
   const {
     ffmpegLoaded,
-    logs,
     commandApi,
     run: runFFMPEG,
     loadFile,
     runFilesWatcher,
     removeFile: removeFFMPEGFile,
-  } = useFFMPEG();
+    synchronizeFileSystem,
+  } = useFFMPEG(
+    msg => (ref.current.innerHTML = `${msg}\n\n${ref.current.innerHTML}`),
+    files => {
+      files.forEach(({ fileName, url }) => {
+        const file = localFiles.current.find(propEq("name", fileName));
+        if (!file) return;
+        file.objectURL = url;
+      });
+      update();
+    },
+  );
 
   const update = useForceUpdate();
   const localFiles = React.useRef<LocalFileInterface[]>([]);
@@ -29,21 +39,20 @@ export default function() {
     if (!ffmpegLoaded) return;
 
     runFilesWatcher(data => {
+      let newFileDetected = false;
       Object.keys(data).forEach(fileName => {
         const localFile = localFiles.current.find(propEq("name", fileName));
-        if (localFile) {
-          if (!localFile.ffmpegContent) {
-            localFile.ffmpegContent = data[fileName];
-            update();
-          }
-          return;
-        }
+        if (localFile) return;
         localFiles.current = append(
-          { name: fileName, file: null, ffmpegContent: data[fileName] },
+          { name: fileName, file: null, objectURL: null },
           localFiles.current,
         );
-        update();
+        newFileDetected = true;
       });
+      if (newFileDetected) {
+        synchronizeFileSystem(localFiles.current.map(prop("name")));
+      }
+      update();
     });
   }, [ffmpegLoaded]);
 
@@ -65,11 +74,12 @@ export default function() {
     setSelectedFiles({ ...selectedFiles, [file.name]: true });
   }
 
-  function uploadFile(file: File) {
+  async function uploadFile(file: File) {
     localFiles.current = append(
       { name: file.name, file: file },
       localFiles.current,
     );
+    await Promise.all(localFiles.current.map(loadFile));
     update();
   }
 
@@ -77,10 +87,8 @@ export default function() {
     const a = document.createElement("a");
     a.download = file.name;
     document.body.appendChild(a);
-    if (file.ffmpegContent) {
-      a.href = URL.createObjectURL(
-        FFMPEG.convertUint8ArrayToBlob(file.ffmpegContent),
-      );
+    if (file.objectURL) {
+      a.href = file.objectURL;
     } else {
       a.href = URL.createObjectURL(new Blob([file.file]));
     }
@@ -89,8 +97,7 @@ export default function() {
   }
 
   function removeFile(localFile: LocalFileInterface) {
-    if (localFile.ffmpegContent) removeFFMPEGFile(localFile.name);
-
+    removeFFMPEGFile(localFile.name);
     localFiles.current = remove(
       localFiles.current.findIndex(propEq("name", localFile.name)),
       1,
@@ -99,24 +106,13 @@ export default function() {
     setSelectedFiles(omit([localFile.name], selectedFiles));
   }
 
-  async function run() {
-    await Promise.all(
-      localFiles.current
-        .filter(localFile => selectedFiles[localFile.file.name])
-        .filter(localFile => !localFile.ffmpegContent)
-        .map(loadFile),
-    );
-    runFFMPEG();
-  }
-
   return {
     ffmpegLoaded,
     selectedFiles,
-    logs,
     commandApi,
     selectedFilesNotEmpty,
     localFiles: localFiles.current,
-    run,
+    run: runFFMPEG,
     toggleSelectFile,
     uploadFile,
     downloadFile,
