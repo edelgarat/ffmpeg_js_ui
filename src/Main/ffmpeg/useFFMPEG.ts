@@ -1,7 +1,7 @@
 import React from "react";
 
 import FFMPEG, { WatcherCallbackDataInterface } from "./library/ffmpeg";
-import useCommand from "./useCommand";
+import useCommand from "./command/useCommand";
 
 import { LocalFileInterface } from "../types";
 

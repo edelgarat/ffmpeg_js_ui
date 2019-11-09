@@ -12,13 +12,14 @@ import Template from "./Template";
 import FileLoaderSystemDialog from "./FileLoader/SystemDialog";
 import FileLoaderBox from "./FileLoader/FileLoaderBox";
 import FileTree from "./FileTree";
+import Command from "./ffmpeg/command";
 
-import mainHook from "./hooks";
+import mainHook from "./mainHook";
+import { eventValue } from "./helpers";
 
 const StyledCode = styled.code`
   white-space: pre-wrap;
   overflow: scroll;
-  max-height: 200px;
   background-color: white;
   padding: 12px;
 `;
@@ -127,10 +128,7 @@ export default React.memo(function() {
                 <FormControl variant="outlined" fullWidth>
                   <Select
                     value={commandApi.command.outputFileExtension}
-                    onChange={event =>
-                      commandApi.setOutputExtension(event.target
-                        .value as string)
-                    }
+                    onChange={eventValue(commandApi.setOutputExtension)}
                   >
                     <MenuItem value="mp4">mp4</MenuItem>
                     <MenuItem value="avi">avi</MenuItem>
@@ -140,7 +138,10 @@ export default React.memo(function() {
               </Box>
             </Box>
             <Box flex={1} padding="18px">
-              123
+              <Command
+                commandArguments={commandApi.command.arguments}
+                setArguments={commandApi.setArguments}
+              />
             </Box>
             <StyledCode ref={logRef} />
           </Box>
