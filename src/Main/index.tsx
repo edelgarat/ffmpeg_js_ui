@@ -4,13 +4,13 @@ import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import FormControl from "@material-ui/core/FormControl";
 
 import Template from "./Template";
 import FileLoaderSystemDialog from "./FileLoader/SystemDialog";
-
 import FileLoaderBox from "./FileLoader/FileLoaderBox";
-
 import FileTree from "./FileTree";
 
 import mainHook from "./hooks";
@@ -112,8 +112,32 @@ export default React.memo(function() {
             flexDirection="column"
             justifyContent="space-between"
           >
-            <Box bgcolor="lightgray" padding="18px">
-              <code>{commandApi.getString()}</code>
+            <Box padding="18px" display="flex">
+              <Box
+                bgcolor="lightgray"
+                marginRight="18px"
+                flex={1}
+                display="flex"
+                alignItems="center"
+                padding="0 18px"
+              >
+                <code>{commandApi.getString()}</code>
+              </Box>
+              <Box width="100px" marginBottom="2px">
+                <FormControl variant="outlined" fullWidth>
+                  <Select
+                    value={commandApi.command.outputFileExtension}
+                    onChange={event =>
+                      commandApi.setOutputExtension(event.target
+                        .value as string)
+                    }
+                  >
+                    <MenuItem value="mp4">mp4</MenuItem>
+                    <MenuItem value="avi">avi</MenuItem>
+                    <MenuItem value="mkv">mkv</MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
             </Box>
             <Box flex={1} padding="18px">
               123

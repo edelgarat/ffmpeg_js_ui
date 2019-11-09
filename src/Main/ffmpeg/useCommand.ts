@@ -3,7 +3,7 @@ import { assoc } from "ramda";
 
 interface CommandInterface {
   inputs: string[];
-  output: string;
+  outputFileExtension: string;
   arguments: { [name: string]: string };
 }
 
@@ -13,7 +13,7 @@ function getCommandArray(command: CommandInterface, basePath = "") {
   command.inputs.forEach(input => {
     result.push("-i", `${basePath}${input}`);
   });
-  result.push(`${basePath}output.${command.output}`);
+  result.push(`${basePath}output.${command.outputFileExtension}`);
 
   result.push("-vf", "scale=320:240");
 
@@ -27,7 +27,7 @@ function getCommandString(command: CommandInterface) {
 export default function useCommand() {
   const [command, setCommand] = React.useState<CommandInterface>(() => ({
     inputs: [],
-    output: "mp4",
+    outputFileExtension: "mp4",
     arguments: {},
   }));
 
@@ -35,6 +35,8 @@ export default function useCommand() {
     command,
     setInputs: (inputs: string[]) =>
       setCommand(assoc("inputs", inputs, command)),
+    setOutputExtension: (extension: string) =>
+      setCommand(assoc("outputFileExtension", extension, command)),
     getString: () => getCommandString(command),
     getArray: basePath => getCommandArray(command, basePath),
   };

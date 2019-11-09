@@ -2,12 +2,17 @@ import React, { MutableRefObject } from "react";
 import { append, omit, remove, propEq, prop } from "ramda";
 
 import { useFFMPEG } from "./ffmpeg/useFFMPEG";
+import { useForceUpdate } from "./helpers";
 
 import { LocalFileInterface } from "./types";
-import { useForceUpdate } from "./helpers";
-import FFMPEG from "./ffmpeg/library/ffmpeg";
 
 export default function(ref: MutableRefObject<HTMLElement>) {
+  const update = useForceUpdate();
+  const localFiles = React.useRef<LocalFileInterface[]>([]);
+  const [selectedFiles, setSelectedFiles] = React.useState<{
+    [name: string]: true;
+  }>({});
+
   const {
     ffmpegLoaded,
     commandApi,
@@ -28,16 +33,8 @@ export default function(ref: MutableRefObject<HTMLElement>) {
     },
   );
 
-  const update = useForceUpdate();
-  const localFiles = React.useRef<LocalFileInterface[]>([]);
-
-  const [selectedFiles, setSelectedFiles] = React.useState<{
-    [name: string]: true;
-  }>({});
-
   React.useEffect(() => {
     if (!ffmpegLoaded) return;
-
     runFilesWatcher(data => {
       let newFileDetected = false;
       Object.keys(data).forEach(fileName => {
