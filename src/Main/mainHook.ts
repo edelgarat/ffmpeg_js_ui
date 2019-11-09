@@ -22,7 +22,13 @@ export default function(ref: MutableRefObject<HTMLElement>) {
     removeFile: removeFFMPEGFile,
     synchronizeFileSystem,
   } = useFFMPEG(
-    msg => (ref.current.innerHTML = `${ref.current.innerHTML}\n\n${msg}`),
+    msg => {
+      // if (!ref.current) {
+      console.log(msg);
+      // return;
+      // }
+      // ref.current.innerHTML = `${ref.current.innerHTML}\n\n${msg}`;
+    },
     files => {
       files.forEach(({ fileName, url }) => {
         const file = localFiles.current.find(propEq("name", fileName));

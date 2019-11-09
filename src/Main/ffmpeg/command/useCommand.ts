@@ -2,9 +2,13 @@ import React from "react";
 import { assoc } from "ramda";
 
 interface CommandArgumentsInterface {
-  input: Record<string, string>;
+  input: {
+    extractPartition?: [string, string];
+    videoCodec?: string;
+    audioCodec?: string;
+  };
   output: {
-    resize?: [number, number];
+    resize?: [string, string];
   };
 }
 
@@ -20,28 +24,51 @@ export interface CommandControllerInterface {
 }
 
 const commandConfigFromArgument: Record<
-  keyof (
-    | CommandArgumentsInterface["input"]
-    | CommandArgumentsInterface["output"]),
+  | (keyof CommandArgumentsInterface["input"])
+  | keyof (CommandArgumentsInterface["output"]),
   (data: any) => string[]
 > = {
   resize: ([width, height]) => ["-vf", `scale=${width}:${height}`],
+  extractPartition: ([from, length]) => ["-ss", from, "-t", length],
+  videoCodec: codec => ["-vcodec", codec],
+  audioCodec: codec => ["-acodec", codec],
 };
 
+function applyCommandToString(
+  key: string,
+  argumentBase:
+    | CommandArgumentsInterface["input"]
+    | CommandArgumentsInterface["output"],
+  result: string[],
+) {
+  if (!argumentBase[key]) return;
+  result.push(...commandConfigFromArgument[key](argumentBase[key]));
+}
+
 function getCommandArray(command: CommandInterface, basePath = "") {
-  const result = ["ffmpeg", "-threads", "1", "-loglevel", "debug", "-nostdin"];
+  const result = [
+    "ffmpeg",
+    "-threads",
+    "1",
+    "-y",
+    "-loglevel",
+    "debug",
+    "-nostdin",
+  ];
 
   command.inputs.forEach(input => {
     result.push("-i", `${basePath}${input}`);
   });
 
+  Object.keys(command.arguments.input).forEach(key => {
+    applyCommandToString(key, command.arguments.input, result);
+  });
+
+  // @ts-ignore
   result.push(`${basePath}output.${command.outputFileExtension}`);
 
   Object.keys(command.arguments.output).forEach(key => {
-    if (!command.arguments.output[key]) return;
-    result.push(
-      ...commandConfigFromArgument[key](command.arguments.output[key]),
-    );
+    applyCommandToString(key, command.arguments.output, result);
   });
 
   return result;
@@ -56,7 +83,10 @@ export default function useCommand() {
     inputs: [],
     outputFileExtension: "mp4",
     arguments: {
-      input: {},
+      input: {
+        audioCodec: "copy",
+        videoCodec: "copy",
+      },
       output: {},
     },
   }));

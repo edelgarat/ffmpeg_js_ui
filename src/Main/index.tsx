@@ -22,6 +22,7 @@ const StyledCode = styled.code`
   overflow: scroll;
   background-color: white;
   padding: 12px;
+  flex: 1;
 `;
 
 export default React.memo(function() {
@@ -132,18 +133,31 @@ export default React.memo(function() {
                   >
                     <MenuItem value="mp4">mp4</MenuItem>
                     <MenuItem value="avi">avi</MenuItem>
+                    <MenuItem value="mpg">mpg</MenuItem>
                     <MenuItem value="mkv">mkv</MenuItem>
                   </Select>
                 </FormControl>
               </Box>
             </Box>
-            <Box flex={1} padding="18px">
+            <Box padding="18px">
               <Command
                 commandArguments={commandApi.command.arguments}
                 setArguments={commandApi.setArguments}
               />
             </Box>
-            <StyledCode ref={logRef} />
+            <Box flexDirection="column" display="flex" height="100%">
+              <Box
+                padding="18px"
+                display="flex"
+                alignItems="center"
+                justifyContent="flex-end"
+              >
+                <Button onClick={() => (logRef.current.innerHTML = "")}>
+                  Clear logs
+                </Button>
+              </Box>
+              <StyledCode ref={logRef} />
+            </Box>
           </Box>
         </Box>
       )}

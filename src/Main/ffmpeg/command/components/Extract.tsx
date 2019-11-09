@@ -15,36 +15,48 @@ export default React.memo(function({
 }: CommandControllerInterface) {
   return (
     <CommandChildComponentWrapper
-      node={commandArguments.output.resize}
-      label="Resize"
+      node={commandArguments.input.extractPartition}
+      label="Extract partition"
       enable={() =>
         setArguments(
-          assocPath(["output", "resize"], ["", ""], commandArguments),
+          assocPath(["input", "extractPartition"], ["", ""], commandArguments),
         )
       }
       disable={() =>
         setArguments(
-          assocPath(["output", "resize"], null as any, commandArguments),
+          assocPath(
+            ["input", "extractPartition"],
+            null as any,
+            commandArguments,
+          ),
         )
       }
     >
       {() => (
-        <Box width="200px" display="flex">
+        <Box width="350px" display="flex">
           <Input
-            value={commandArguments.output.resize[0]}
-            placeholder="width(px)"
+            value={commandArguments.input.extractPartition[0]}
+            placeholder="starts from (00:00:14)"
             onChange={eventValue(value =>
               setArguments(
-                assocPath(["output", "resize", 0], value, commandArguments),
+                assocPath(
+                  ["input", "extractPartition", 0],
+                  value,
+                  commandArguments,
+                ),
               ),
             )}
           />
           <Input
-            value={commandArguments.output.resize[1]}
-            placeholder="height(px)"
+            value={commandArguments.input.extractPartition[1]}
+            placeholder="length (00:00:11)"
             onChange={eventValue(value =>
               setArguments(
-                assocPath(["output", "resize", 1], value, commandArguments),
+                assocPath(
+                  ["input", "extractPartition", 1],
+                  value,
+                  commandArguments,
+                ),
               ),
             )}
           />

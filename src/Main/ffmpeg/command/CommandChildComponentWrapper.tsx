@@ -5,7 +5,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 interface CommandChildComponentWrapperInterface {
   label: string;
-  node: any[];
+  node: any;
   children: () => React.ReactNode;
   enable: () => void;
   disable: () => void;

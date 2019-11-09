@@ -10,7 +10,7 @@ export function useFFMPEG(
   synchronizeFileSystem: (files: { fileName: string; url: string }[]) => void,
 ) {
   const [ffmpegModuleSource] = React.useState(() =>
-    fetch("/static/js/ffmpeg.js").then(val => val.text()),
+    fetch("/static/js/ffmpeg-core.js").then(val => val.text()),
   );
 
   const commandApi = useCommand();
