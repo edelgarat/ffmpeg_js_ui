@@ -23,6 +23,7 @@ export default function(ref: MutableRefObject<HTMLElement>) {
     synchronizeFileSystem,
   } = useFFMPEG(
     msg => {
+      if (!msg) return;
       if (ref.current) {
         ref.current.innerHTML += msg;
         return;

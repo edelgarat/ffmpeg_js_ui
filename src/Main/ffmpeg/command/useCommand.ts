@@ -69,6 +69,8 @@ function getCommandArray(
     result.push("-i", `${basePath}${input}`);
   });
 
+  result.push("-strict", "-2");
+
   Object.keys(command.arguments.input).forEach(key => {
     applyCommandToString(key, command.arguments.input, result);
   });
