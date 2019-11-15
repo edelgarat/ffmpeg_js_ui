@@ -7,8 +7,8 @@ export interface CodecItem {
 
 export const videoCodecs: CodecItem[] = [
   { name: "Copy original", value: "copy" },
-  { name: "WebP", value: "webp", disabled: true },
-  { name: "H.264", value: "h264" },
+  { name: "H.264", value: "libx264" },
+  { name: "H.265", value: "libx265", disabled: true },
   { name: "MPEG-4 (part 2)", value: "mpeg4" },
   { name: "AV1", value: "libaom-av1", disabled: true },
   { name: "VP8", value: "libvpx", disabled: true },
@@ -18,7 +18,6 @@ export const videoCodecs: CodecItem[] = [
     value: "prores",
     supportedOutputs: ["mkv"],
   },
-  { name: "H.265", value: "libx265", disabled: true },
 ];
 
 export const audioCodecs: CodecItem[] = [
