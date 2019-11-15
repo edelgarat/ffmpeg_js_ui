@@ -90,10 +90,10 @@ export default function ffmpegForker() {
 
     runWatcher(callback: (data) => void) {
       const timer = setInterval(() => {
-        const directory = this.ffmpegRaw.FS.root.contents.src.contents;
+        const files = this.ffmpegRaw.FS.readdir("/src").slice(2);
         const result = {};
-        Object.keys(directory).forEach(file => {
-          result[directory[file].name] = true;
+        files.forEach(file => {
+          result[file] = true;
         });
         callback(result);
       }, 1000);
@@ -101,8 +101,10 @@ export default function ffmpegForker() {
     }
 
     removeFile(name: string) {
-      if (this.convertedFiles[name])
+      if (this.convertedFiles[name]) {
         URL.revokeObjectURL(this.convertedFiles[name]);
+        this.convertedFiles[name] = null;
+      }
       this.ffmpegRaw.FS.unlink(`/src/${name}`);
     }
 
@@ -114,9 +116,7 @@ export default function ffmpegForker() {
           type: "synchronizeFileSystem",
           data: fileNames.map(fileName => {
             if (!this.convertedFiles[fileName]) {
-              const content = this.ffmpegRaw.FS.root.contents.src.contents[
-                fileName
-              ].contents;
+              const content = this.ffmpegRaw.FS.readFile(`/src/${fileName}`);
 
               this.convertedFiles[fileName] = URL.createObjectURL(
                 convertUint8ArrayToBlob(content),
