@@ -1,10 +1,11 @@
 import React from "react";
-import { assocPath } from "ramda";
 import Box from "@material-ui/core/Box";
 import TextField from "@material-ui/core/TextField";
 import Tooltip from "@material-ui/core/Tooltip";
 
-import CommandChildComponentWrapper from "../CommandChildComponentWrapper";
+import CommandChildComponentWrapper, {
+  setCommandArgument,
+} from "../CommandChildComponentWrapper";
 
 import { eventValue } from "../../../helpers";
 
@@ -14,22 +15,25 @@ export default React.memo(function({
   commandArguments,
   setArguments,
 }: CommandControllerInterface) {
+  const { extractPartition } = commandArguments.input;
   return (
     <CommandChildComponentWrapper
-      node={commandArguments.input.extractPartition}
+      node={extractPartition}
       label="Extract partition"
       enable={() =>
-        setArguments(
-          assocPath(["input", "extractPartition"], ["", ""], commandArguments),
+        setCommandArgument(
+          ["input", "extractPartition"],
+          commandArguments,
+          setArguments,
+          ["", ""],
         )
       }
       disable={() =>
-        setArguments(
-          assocPath(
-            ["input", "extractPartition"],
-            null as any,
-            commandArguments,
-          ),
+        setCommandArgument(
+          ["input", "extractPartition"],
+          commandArguments,
+          setArguments,
+          null,
         )
       }
     >
@@ -39,14 +43,12 @@ export default React.memo(function({
             <TextField
               label="Start"
               placeholder="00:00:00"
-              value={commandArguments.input.extractPartition[0]}
-              onChange={eventValue(value =>
-                setArguments(
-                  assocPath(
-                    ["input", "extractPartition", 0],
-                    value,
-                    commandArguments,
-                  ),
+              value={extractPartition[0]}
+              onChange={eventValue(
+                setCommandArgument(
+                  ["input", "extractPartition", 0],
+                  commandArguments,
+                  setArguments,
                 ),
               )}
             />
@@ -55,15 +57,13 @@ export default React.memo(function({
           <Tooltip title="Video trimming length" placement="bottom-start">
             <TextField
               label="Length"
-              value={commandArguments.input.extractPartition[1]}
+              value={extractPartition[1]}
               placeholder="00:00:00"
-              onChange={eventValue(value =>
-                setArguments(
-                  assocPath(
-                    ["input", "extractPartition", 1],
-                    value,
-                    commandArguments,
-                  ),
+              onChange={eventValue(
+                setCommandArgument(
+                  ["input", "extractPartition", 1],
+                  commandArguments,
+                  setArguments,
                 ),
               )}
             />

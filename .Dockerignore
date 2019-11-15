@@ -1,5 +1,6 @@
 /src
 /ffmpeg
+/libvpx
 /public
 /.git
 /node_modules

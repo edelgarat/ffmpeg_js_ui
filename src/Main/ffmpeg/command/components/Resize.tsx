@@ -4,7 +4,9 @@ import Box from "@material-ui/core/Box";
 import TextField from "@material-ui/core/TextField";
 import Tooltip from "@material-ui/core/Tooltip";
 
-import CommandChildComponentWrapper from "../CommandChildComponentWrapper";
+import CommandChildComponentWrapper, {
+  setCommandArgument,
+} from "../CommandChildComponentWrapper";
 
 import { eventValue } from "../../../helpers";
 
@@ -14,18 +16,25 @@ export default React.memo(function({
   commandArguments,
   setArguments,
 }: CommandControllerInterface) {
+  const { resize } = commandArguments.output;
   return (
     <CommandChildComponentWrapper
-      node={commandArguments.output.resize}
+      node={resize}
       label="Resize"
       enable={() =>
-        setArguments(
-          assocPath(["output", "resize"], ["", ""], commandArguments),
+        setCommandArgument(
+          ["output", "resize"],
+          commandArguments,
+          setArguments,
+          ["", ""],
         )
       }
       disable={() =>
-        setArguments(
-          assocPath(["output", "resize"], null as any, commandArguments),
+        setCommandArgument(
+          ["output", "resize"],
+          commandArguments,
+          setArguments,
+          null,
         )
       }
     >
@@ -37,11 +46,13 @@ export default React.memo(function({
           >
             <TextField
               label="Width"
-              value={commandArguments.output.resize[0]}
+              value={resize[0]}
               placeholder="1920"
-              onChange={eventValue(value =>
-                setArguments(
-                  assocPath(["output", "resize", 0], value, commandArguments),
+              onChange={eventValue(
+                setCommandArgument(
+                  ["output", "resize", 0],
+                  commandArguments,
+                  setArguments,
                 ),
               )}
             />
@@ -53,11 +64,13 @@ export default React.memo(function({
           >
             <TextField
               label="Height"
-              value={commandArguments.output.resize[1]}
+              value={resize[1]}
               placeholder="1080"
-              onChange={eventValue(value =>
-                setArguments(
-                  assocPath(["output", "resize", 1], value, commandArguments),
+              onChange={eventValue(
+                setCommandArgument(
+                  ["output", "resize", 1],
+                  commandArguments,
+                  setArguments,
                 ),
               )}
             />

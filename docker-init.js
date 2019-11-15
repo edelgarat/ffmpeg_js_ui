@@ -10,6 +10,36 @@ function x264() {
   );
 }
 
+function libvpx() {
+  const config = fs.readFileSync(
+    "third_party/libvpx/build/make/configure.sh",
+    "utf-8",
+  );
+  fs.writeFileSync(
+    "third_party/libvpx/build/make/configure.sh",
+    config.replace(
+      `    *-gcc|generic-gnu)`,
+      `    js1)
+      case  \${tgt_cc} in
+        emcc)
+          CC=emcc
+          LD=llvm-link
+          AR=llvm-ar
+          AS=llvm-as
+          NM=llvm-nm
+          tune_cflags=""
+          tune_asflags=""
+          disable multithread
+          add_cflags -emit-llvm
+          HAVE_GNU_STRIP=no
+          ;;
+        esac
+      ;;
+    *-gcc|generic-gnu)`,
+    ),
+  );
+}
+
 function ffmpeg() {
   fs.writeFileSync(
     "fftools/ffmpeg.c",
@@ -53,6 +83,7 @@ int ffmpeg(`,
 }
 
 x264();
+// libvpx();
 ffmpeg();
 
 console.log("docker-init ok");

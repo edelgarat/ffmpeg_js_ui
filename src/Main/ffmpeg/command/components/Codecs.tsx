@@ -1,11 +1,12 @@
 import React from "react";
-import { assocPath } from "ramda";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Box from "@material-ui/core/Box";
 
-import CommandChildComponentWrapper from "../CommandChildComponentWrapper";
+import CommandChildComponentWrapper, {
+  setCommandArgument,
+} from "../CommandChildComponentWrapper";
 
 import { eventValue } from "../../../helpers";
 
@@ -30,27 +31,25 @@ const BaseCodec = React.memo(function({
   items,
   setArguments,
 }: CodecsInterface) {
+  const setType = setCommandArgument(
+    ["input", type],
+    commandArguments,
+    setArguments,
+  );
+
   return (
     <CommandChildComponentWrapper
       node={commandArguments.input[type]}
       label={label}
-      enable={() =>
-        setArguments(assocPath(["input", type], "copy", commandArguments))
-      }
-      disable={() =>
-        setArguments(assocPath(["input", type], null as any, commandArguments))
-      }
+      enable={() => setType("copy")}
+      disable={() => setType(null)}
     >
       {() => (
         <Box width="140px" display="flex">
           <FormControl variant="outlined" fullWidth>
             <Select
               value={commandArguments.input[type]}
-              onChange={eventValue(value =>
-                setArguments(
-                  assocPath(["input", type], value, commandArguments),
-                ),
-              )}
+              onChange={eventValue(setType)}
             >
               {items.map(({ name, value, disabled }) => (
                 <MenuItem key={value} disabled={disabled} value={value}>

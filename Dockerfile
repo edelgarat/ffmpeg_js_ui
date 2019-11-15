@@ -14,22 +14,25 @@ RUN git clone https://git.ffmpeg.org/ffmpeg.git . --depth 1
 COPY docker-init.js /src
 
 RUN mkdir build
-
 RUN mkdir third_party
-
 WORKDIR /src/third_party
 
 RUN git clone https://code.videolan.org/videolan/x264.git x264 --depth 1
+#RUN git clone https://chromium.googlesource.com/webm/libvpx libvpx --depth 1
 
 WORKDIR /src
-
 RUN node docker-init.js
 
 WORKDIR /src/third_party/x264
-
 RUN emconfigure ./configure --disable-asm --disable-thread --prefix=/src/build
-
 RUN emmake make install-lib-static
+
+#WORKDIR /src/third_party/libvpx
+#RUN cat build/make/configure.sh
+#RUN emconfigure ./configure --prefix=/src/build \
+#    --force-target=js --disable-examples --disable-docs --disable-multithread \
+#    --disable-runtime-cpu-detect --disable-optimizations --extra-cflags="-O2"
+#RUN emmake make
 
 WORKDIR /src
 
@@ -47,6 +50,7 @@ RUN emconfigure ./configure \
     --dep-cc=emcc \
     --ranlib="llvm-ranlib" \
     --enable-gpl \
+#    --enable-version3 --enable-nonfree --enable-libvpx \
     --enable-libx264 \
     --disable-pthreads \
     --disable-ffprobe \

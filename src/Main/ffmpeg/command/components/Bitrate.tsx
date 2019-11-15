@@ -1,10 +1,11 @@
 import React from "react";
-import { assocPath } from "ramda";
 import Box from "@material-ui/core/Box";
 import TextField from "@material-ui/core/TextField";
 import Tooltip from "@material-ui/core/Tooltip";
 
-import CommandChildComponentWrapper from "../CommandChildComponentWrapper";
+import CommandChildComponentWrapper, {
+  setCommandArgument,
+} from "../CommandChildComponentWrapper";
 
 import { eventValue } from "../../../helpers";
 
@@ -14,18 +15,25 @@ export default React.memo(function({
   commandArguments,
   setArguments,
 }: CommandControllerInterface) {
+  const { bitrate } = commandArguments.input;
   return (
     <CommandChildComponentWrapper
-      node={commandArguments.input.bitrate}
+      node={bitrate}
       label="Bitrate"
       enable={() =>
-        setArguments(
-          assocPath(["input", "bitrate"], ["", ""], commandArguments),
+        setCommandArgument(
+          ["input", "bitrate"],
+          commandArguments,
+          setArguments,
+          ["", ""],
         )
       }
       disable={() =>
-        setArguments(
-          assocPath(["input", "bitrate"], null as any, commandArguments),
+        setCommandArgument(
+          ["input", "bitrate"],
+          commandArguments,
+          setArguments,
+          null,
         )
       }
     >
@@ -35,10 +43,12 @@ export default React.memo(function({
             <TextField
               label="Video"
               placeholder="4m"
-              value={commandArguments.input.bitrate[0]}
-              onChange={eventValue(value =>
-                setArguments(
-                  assocPath(["input", "bitrate", 0], value, commandArguments),
+              value={bitrate[0]}
+              onChange={eventValue(
+                setCommandArgument(
+                  ["input", "bitrate", 0],
+                  commandArguments,
+                  setArguments,
                 ),
               )}
             />
@@ -48,10 +58,12 @@ export default React.memo(function({
             <TextField
               label="Audio"
               placeholder="128k"
-              value={commandArguments.input.bitrate[1]}
-              onChange={eventValue(value =>
-                setArguments(
-                  assocPath(["input", "bitrate", 1], value, commandArguments),
+              value={bitrate[1]}
+              onChange={eventValue(
+                setCommandArgument(
+                  ["input", "bitrate", 1],
+                  commandArguments,
+                  setArguments,
                 ),
               )}
             />

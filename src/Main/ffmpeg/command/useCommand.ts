@@ -1,7 +1,7 @@
 import React from "react";
 import { assoc } from "ramda";
 
-interface CommandArgumentsInterface {
+export interface CommandArgumentsInterface {
   input: {
     bitrate?: [string, string];
     extractPartition?: [string, string];
@@ -75,7 +75,6 @@ function getCommandArray(
     applyCommandToString(key, command.arguments.input, result);
   });
 
-  // @ts-ignore
   result.push(
     `${basePath}output${fileNamePostfix}.${command.outputFileExtension}`,
   );
