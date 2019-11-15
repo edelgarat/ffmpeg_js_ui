@@ -20,7 +20,7 @@ export default React.memo(function({
 }: CommandChildComponentWrapperInterface) {
   const checked = !!node;
   return (
-    <Box display="flex" marginRight="18px">
+    <Box display="flex" marginRight="18px" height="56px">
       <FormControlLabel
         control={
           <Checkbox checked={checked} onChange={checked ? disable : enable} />

@@ -24,7 +24,7 @@ export default function(ref: MutableRefObject<HTMLElement>) {
   } = useFFMPEG(
     msg => {
       if (ref.current) {
-        ref.current.innerHTML = `${ref.current.innerHTML}\n\n${msg}`;
+        ref.current.innerHTML += msg;
         return;
       }
       console.log(msg);
@@ -115,7 +115,7 @@ export default function(ref: MutableRefObject<HTMLElement>) {
     commandApi,
     selectedFilesNotEmpty,
     localFiles: localFiles.current,
-    run: runFFMPEG,
+    run: () => runFFMPEG(localFiles.current),
     toggleSelectFile,
     uploadFile,
     downloadFile,

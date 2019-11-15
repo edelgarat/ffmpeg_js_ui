@@ -52,8 +52,8 @@ const BaseCodec = React.memo(function({
                 ),
               )}
             >
-              {items.map(({ name, value }) => (
-                <MenuItem key={value} value={value}>
+              {items.map(({ name, value, disabled }) => (
+                <MenuItem key={value} disabled={disabled} value={value}>
                   {name}
                 </MenuItem>
               ))}

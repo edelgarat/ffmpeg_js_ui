@@ -3,6 +3,7 @@ import { assoc } from "ramda";
 
 interface CommandArgumentsInterface {
   input: {
+    bitrate?: [string, string];
     extractPartition?: [string, string];
     videoCodec?: string;
     audioCodec?: string;
@@ -12,7 +13,7 @@ interface CommandArgumentsInterface {
   };
 }
 
-interface CommandInterface {
+export interface CommandInterface {
   inputs: string[];
   outputFileExtension: string;
   arguments: CommandArgumentsInterface;
@@ -28,10 +29,14 @@ const commandConfigFromArgument: Record<
   | keyof (CommandArgumentsInterface["output"]),
   (data: any) => string[]
 > = {
+  bitrate: ([video, audio]) => [
+    ...(video ? ["-b:v", video] : []),
+    ...(audio ? ["-b:a", audio] : []),
+  ],
   resize: ([width, height]) => ["-vf", `scale=${width}:${height}`],
   extractPartition: ([from, length]) => ["-ss", from, "-t", length],
-  videoCodec: codec => ["-vcodec", codec],
-  audioCodec: codec => ["-acodec", codec],
+  videoCodec: codec => ["-c:v", codec],
+  audioCodec: codec => ["-c:a", codec],
 };
 
 function applyCommandToString(
@@ -45,7 +50,11 @@ function applyCommandToString(
   result.push(...commandConfigFromArgument[key](argumentBase[key]));
 }
 
-function getCommandArray(command: CommandInterface, basePath = "") {
+function getCommandArray(
+  command: CommandInterface,
+  basePath = "",
+  fileNamePostfix = "",
+) {
   const result = [
     "ffmpeg",
     "-threads",
@@ -65,7 +74,9 @@ function getCommandArray(command: CommandInterface, basePath = "") {
   });
 
   // @ts-ignore
-  result.push(`${basePath}output.${command.outputFileExtension}`);
+  result.push(
+    `${basePath}output${fileNamePostfix}.${command.outputFileExtension}`,
+  );
 
   Object.keys(command.arguments.output).forEach(key => {
     applyCommandToString(key, command.arguments.output, result);
@@ -98,7 +109,8 @@ export default function useCommand() {
     setOutputExtension: (extension: string) =>
       setCommand(assoc("outputFileExtension", extension, command)),
     getString: () => getCommandString(command),
-    getArray: basePath => getCommandArray(command, basePath),
+    getArray: (basePath, fileNamePostfix?: string) =>
+      getCommandArray(command, basePath, fileNamePostfix),
     setArguments: (commandArguments: CommandArgumentsInterface) =>
       setCommand(assoc("arguments", commandArguments, command)),
   };
