@@ -1,7 +1,8 @@
 import React from "react";
 import { assocPath } from "ramda";
-import Input from "@material-ui/core/Input";
 import Box from "@material-ui/core/Box";
+import TextField from "@material-ui/core/TextField";
+import Tooltip from "@material-ui/core/Tooltip";
 
 import CommandChildComponentWrapper from "../CommandChildComponentWrapper";
 
@@ -30,24 +31,36 @@ export default React.memo(function({
     >
       {() => (
         <Box width="200px" display="flex">
-          <Input
-            value={commandArguments.output.resize[0]}
-            placeholder="width(px)"
-            onChange={eventValue(value =>
-              setArguments(
-                assocPath(["output", "resize", 0], value, commandArguments),
-              ),
-            )}
-          />
-          <Input
-            value={commandArguments.output.resize[1]}
-            placeholder="height(px)"
-            onChange={eventValue(value =>
-              setArguments(
-                assocPath(["output", "resize", 1], value, commandArguments),
-              ),
-            )}
-          />
+          <Tooltip
+            title="horizontal pixel size of the video"
+            placement="bottom-start"
+          >
+            <TextField
+              label="Width"
+              value={commandArguments.output.resize[0]}
+              placeholder="1920"
+              onChange={eventValue(value =>
+                setArguments(
+                  assocPath(["output", "resize", 0], value, commandArguments),
+                ),
+              )}
+            />
+          </Tooltip>
+          <Tooltip
+            title="vertical pixel size of the video"
+            placement="bottom-start"
+          >
+            <TextField
+              label="Height"
+              value={commandArguments.output.resize[1]}
+              placeholder="1080"
+              onChange={eventValue(value =>
+                setArguments(
+                  assocPath(["output", "resize", 1], value, commandArguments),
+                ),
+              )}
+            />
+          </Tooltip>
         </Box>
       )}
     </CommandChildComponentWrapper>

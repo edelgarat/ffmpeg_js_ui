@@ -23,11 +23,11 @@ export default function(ref: MutableRefObject<HTMLElement>) {
     synchronizeFileSystem,
   } = useFFMPEG(
     msg => {
-      // if (!ref.current) {
+      if (ref.current) {
+        ref.current.innerHTML = `${ref.current.innerHTML}\n\n${msg}`;
+        return;
+      }
       console.log(msg);
-      // return;
-      // }
-      // ref.current.innerHTML = `${ref.current.innerHTML}\n\n${msg}`;
     },
     files => {
       files.forEach(({ fileName, url }) => {

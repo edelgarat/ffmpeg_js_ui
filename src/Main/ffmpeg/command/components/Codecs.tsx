@@ -9,12 +9,18 @@ import CommandChildComponentWrapper from "../CommandChildComponentWrapper";
 
 import { eventValue } from "../../../helpers";
 
+import {
+  CodecItem,
+  audioCodecs,
+  videoCodecs,
+} from "../../../dictionaries/codecs";
+
 import { CommandControllerInterface } from "../useCommand";
 
 interface CodecsInterface extends CommandControllerInterface {
   label: string;
   type: "videoCodec" | "audioCodec";
-  items: { name: string; value: string }[];
+  items: CodecItem[];
 }
 
 const BaseCodec = React.memo(function({
@@ -58,21 +64,6 @@ const BaseCodec = React.memo(function({
     </CommandChildComponentWrapper>
   );
 });
-
-const videoCodecs: CodecsInterface["items"] = [
-  { name: "Copy original", value: "copy" },
-  { name: "H.264", value: "h264" },
-  { name: "MPEG-4", value: "mpeg4" },
-  { name: "H.265", value: "hevc" },
-  { name: "Apple ProRes", value: "prores" },
-];
-
-const audioCodecs: CodecsInterface["items"] = [
-  { name: "Copy original", value: "copy" },
-  { name: "Mp3", value: "mp3" },
-  { name: "Flac", value: "flac" },
-  { name: "AAC", value: "aac" },
-];
 
 export const VideoCodec = (props: CommandControllerInterface) => (
   <BaseCodec

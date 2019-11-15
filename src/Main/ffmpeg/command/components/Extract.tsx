@@ -1,7 +1,8 @@
 import React from "react";
 import { assocPath } from "ramda";
-import Input from "@material-ui/core/Input";
 import Box from "@material-ui/core/Box";
+import TextField from "@material-ui/core/TextField";
+import Tooltip from "@material-ui/core/Tooltip";
 
 import CommandChildComponentWrapper from "../CommandChildComponentWrapper";
 
@@ -34,32 +35,39 @@ export default React.memo(function({
     >
       {() => (
         <Box width="350px" display="flex">
-          <Input
-            value={commandArguments.input.extractPartition[0]}
-            placeholder="starts from (00:00:14)"
-            onChange={eventValue(value =>
-              setArguments(
-                assocPath(
-                  ["input", "extractPartition", 0],
-                  value,
-                  commandArguments,
+          <Tooltip title="Start trimming video from" placement="bottom-start">
+            <TextField
+              label="Start"
+              placeholder="00:00:00"
+              value={commandArguments.input.extractPartition[0]}
+              onChange={eventValue(value =>
+                setArguments(
+                  assocPath(
+                    ["input", "extractPartition", 0],
+                    value,
+                    commandArguments,
+                  ),
                 ),
-              ),
-            )}
-          />
-          <Input
-            value={commandArguments.input.extractPartition[1]}
-            placeholder="length (00:00:11)"
-            onChange={eventValue(value =>
-              setArguments(
-                assocPath(
-                  ["input", "extractPartition", 1],
-                  value,
-                  commandArguments,
+              )}
+            />
+          </Tooltip>
+          <Box width="10px" />
+          <Tooltip title="Video trimming length" placement="bottom-start">
+            <TextField
+              label="Length"
+              value={commandArguments.input.extractPartition[1]}
+              placeholder="00:00:00"
+              onChange={eventValue(value =>
+                setArguments(
+                  assocPath(
+                    ["input", "extractPartition", 1],
+                    value,
+                    commandArguments,
+                  ),
                 ),
-              ),
-            )}
-          />
+              )}
+            />
+          </Tooltip>
         </Box>
       )}
     </CommandChildComponentWrapper>

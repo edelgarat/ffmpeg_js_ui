@@ -1,4 +1,5 @@
 import React from "react";
+import { propEq } from "ramda";
 import styled from "styled-components/macro";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
@@ -14,6 +15,8 @@ import FileLoaderBox from "./FileLoader/FileLoaderBox";
 import FileTree from "./FileTree";
 import Command from "./ffmpeg/command";
 
+import { videoCodecs } from "./dictionaries/codecs";
+
 import mainHook from "./mainHook";
 import { eventValue } from "./helpers";
 
@@ -24,6 +27,8 @@ const StyledCode = styled.code`
   padding: 12px;
   flex: 1;
 `;
+
+const outputFileExtensions = ["mp4", "avi", "mpg", "mkv"];
 
 export default React.memo(function() {
   const logRef = React.useRef<HTMLElement>(null);
@@ -39,6 +44,18 @@ export default React.memo(function() {
     removeFile,
     run,
   } = mainHook(logRef);
+
+  const videoCodec = commandApi.command.arguments.input.videoCodec;
+
+  const selectedVideoCodec = React.useMemo(
+    () => videoCodecs.find(propEq("value", videoCodec)),
+    [videoCodec],
+  );
+
+  React.useEffect(() => {
+    if (selectedVideoCodec && selectedVideoCodec.supportedOutputs)
+      commandApi.setOutputExtension(selectedVideoCodec.supportedOutputs[0]);
+  }, [selectedVideoCodec]);
 
   return (
     <Template
@@ -131,10 +148,15 @@ export default React.memo(function() {
                     value={commandApi.command.outputFileExtension}
                     onChange={eventValue(commandApi.setOutputExtension)}
                   >
-                    <MenuItem value="mp4">mp4</MenuItem>
-                    <MenuItem value="avi">avi</MenuItem>
-                    <MenuItem value="mpg">mpg</MenuItem>
-                    <MenuItem value="mkv">mkv</MenuItem>
+                    {(
+                      (selectedVideoCodec &&
+                        selectedVideoCodec.supportedOutputs) ||
+                      outputFileExtensions
+                    ).map(name => (
+                      <MenuItem key={name} value={name}>
+                        {name}
+                      </MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </Box>
