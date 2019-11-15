@@ -1,27 +1,33 @@
 import { EventEmitter } from "events";
 
-import workerFunction from "./worker";
+const worker = import("./worker");
 
 export default class FFMPEG extends EventEmitter {
   private reader: FileReader;
   private worker: Worker;
 
-  constructor(ffmpegModuleString: string) {
+  constructor(ffmpegModuleString: string, onLoad: (ffmpeg: FFMPEG) => void) {
     super();
     this.reader = new FileReader();
 
-    this.worker = new Worker(
-      URL.createObjectURL(
-        new Blob([
-          `
+    worker.then(value => {
+      this.worker = new Worker(
+        URL.createObjectURL(
+          new Blob([
+            `
 ${ffmpegModuleString}
-${workerFunction.toString()}
+const ffmpegForker=${value.default.toString()}
 ffmpegForker();
 `,
-        ]),
-      ),
-    );
+          ]),
+        ),
+      );
+      this.init();
+      onLoad(this);
+    });
+  }
 
+  private init() {
     this.worker.postMessage(`${document.location.href}static/js/`);
 
     const listener = ({ data: { type, data } }) => {

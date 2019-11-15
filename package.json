@@ -15,6 +15,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "serve": "serve build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "format": "prettier --write --list-different \"src/**/*.{ts,tsx}\""
