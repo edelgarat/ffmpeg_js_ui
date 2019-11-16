@@ -37,13 +37,13 @@ export function useFFMPEG(
         logFunction(logRef.current);
         logRef.current = "";
       }, 1000);
-      new FFMPEG(ffmpegSource, function(ffmpeg) {
-        ffmpeg.on("log", msg => {
-          logRef.current += `${msg}\n\n`;
-        });
-        ffmpeg.on("synchronizeFileSystem", synchronizeFileSystem);
-        setFFMPEG(ffmpeg);
+
+      const ffmpeg = new FFMPEG(ffmpegSource);
+      ffmpeg.on("log", msg => {
+        logRef.current += `${msg}\n\n`;
       });
+      ffmpeg.on("synchronizeFileSystem", synchronizeFileSystem);
+      setFFMPEG(ffmpeg);
     });
     return () => clearInterval(timer);
   }, []);
