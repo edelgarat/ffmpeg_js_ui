@@ -2,6 +2,7 @@
   "name": "ffmpeg_front",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://edelgarat.github.io/ffmpeg_js_ui/",
   "dependencies": {
     "@material-ui/core": "^4.5.2",
     "@material-ui/icons": "^4.5.1",
@@ -15,6 +16,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build:gh-pages": "PUBLIC_URL=/ffmpeg_js_ui && react-scripts build",
+    "mv-build-to-docs": "mv build docs",
     "serve": "serve build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

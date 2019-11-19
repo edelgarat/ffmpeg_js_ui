@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/ffmpeg_js_ui/static/css/main.dc0ea610.chunk.css",
+    "main.js": "/ffmpeg_js_ui/static/js/main.7e31d02c.chunk.js",
+    "main.js.map": "/ffmpeg_js_ui/static/js/main.7e31d02c.chunk.js.map",
+    "runtime-main.js": "/ffmpeg_js_ui/static/js/runtime-main.8e71aeb1.js",
+    "runtime-main.js.map": "/ffmpeg_js_ui/static/js/runtime-main.8e71aeb1.js.map",
+    "static/js/2.91925802.chunk.js": "/ffmpeg_js_ui/static/js/2.91925802.chunk.js",
+    "static/js/2.91925802.chunk.js.map": "/ffmpeg_js_ui/static/js/2.91925802.chunk.js.map",
+    "index.html": "/ffmpeg_js_ui/index.html",
+    "precache-manifest.fd796be75187608c1aabb1b64066f14b.js": "/ffmpeg_js_ui/precache-manifest.fd796be75187608c1aabb1b64066f14b.js",
+    "service-worker.js": "/ffmpeg_js_ui/service-worker.js",
+    "static/css/main.dc0ea610.chunk.css.map": "/ffmpeg_js_ui/static/css/main.dc0ea610.chunk.css.map"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.8e71aeb1.js",
+    "static/js/2.91925802.chunk.js",
+    "static/css/main.dc0ea610.chunk.css",
+    "static/js/main.7e31d02c.chunk.js"
+  ]
+}
