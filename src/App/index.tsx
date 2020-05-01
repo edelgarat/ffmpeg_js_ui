@@ -1,32 +1,24 @@
 import React from "react";
 import { propEq } from "ramda";
-import styled from "styled-components/macro";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import Button from "@material-ui/core/Button";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 
-import Template from "./Template";
-import FileLoaderSystemDialog from "./FileLoader/SystemDialog";
+import Layout from "./Layout";
+import FileSelectorSystemDialog from "./FileLoader/FileSelectorSystemDialog";
 import FileLoaderBox from "./FileLoader/FileLoaderBox";
 import FileTree from "./FileTree";
-import Command from "./ffmpeg/command";
-
-import { videoCodecs } from "./dictionaries/codecs";
+import EmptyFiles from "./EmptyFiles";
+import LoggerView from "./LoggerView";
+import CommandBuilder from "./CommandBuilder";
 
 import mainHook from "./mainHook";
-import { eventValue } from "./helpers";
 
-const StyledCode = styled.code`
-  white-space: pre-wrap;
-  overflow: scroll;
-  background-color: white;
-  padding: 12px;
-  flex: 1;
-`;
+import { eventValue } from "libs/helpers";
+import { videoCodecs } from "dictionaries/codecs";
 
 const outputFileExtensions = ["mp4", "avi", "mpg", "mkv"];
 
@@ -58,8 +50,8 @@ export default React.memo(function() {
   }, [selectedVideoCodec]);
 
   return (
-    <Template
-      rightElement={
+    <Layout
+      headerAction={
         <Box display="flex" alignItems="center">
           {selectedFilesNotEmpty && (
             <Button
@@ -75,27 +67,7 @@ export default React.memo(function() {
       }
     >
       {localFiles.length === 0 ? (
-        <Box
-          display="flex"
-          flex={1}
-          justifyContent="center"
-          alignItems="center"
-        >
-          {ffmpegLoaded ? (
-            <FileLoaderSystemDialog onFileLoaded={uploadFile}>
-              {open => (
-                <FileLoaderBox padding="100px 180px" onClick={open}>
-                  <Typography>Click here to select file</Typography>
-                </FileLoaderBox>
-              )}
-            </FileLoaderSystemDialog>
-          ) : (
-            <>
-              <CircularProgress />
-              <Typography>Loading FFMPEG library...</Typography>
-            </>
-          )}
-        </Box>
+        <EmptyFiles loading={!ffmpegLoaded} uploadFile={uploadFile} />
       ) : (
         <Box display="flex" flex={1} height="calc(100vh - 64px)">
           <Box
@@ -110,13 +82,13 @@ export default React.memo(function() {
               files={localFiles}
               selectedFileNames={selectedFiles}
               newFileLoader={
-                <FileLoaderSystemDialog onFileLoaded={uploadFile}>
+                <FileSelectorSystemDialog onFileLoaded={uploadFile}>
                   {open => (
                     <FileLoaderBox padding="10px 100px" onClick={open}>
                       <Typography>Upload file</Typography>
                     </FileLoaderBox>
                   )}
-                </FileLoaderSystemDialog>
+                </FileSelectorSystemDialog>
               }
               downloadFile={downloadFile}
               removeFile={removeFile}
@@ -162,27 +134,15 @@ export default React.memo(function() {
               </Box>
             </Box>
             <Box padding="18px">
-              <Command
+              <CommandBuilder
                 commandArguments={commandApi.command.arguments}
                 setArguments={commandApi.setArguments}
               />
             </Box>
-            <Box flexDirection="column" display="flex" height="100%">
-              <Box
-                padding="18px"
-                display="flex"
-                alignItems="center"
-                justifyContent="flex-end"
-              >
-                <Button onClick={() => (logRef.current.innerHTML = "")}>
-                  Clear logs
-                </Button>
-              </Box>
-              <StyledCode ref={logRef} />
-            </Box>
+            <LoggerView logRef={logRef} />
           </Box>
         </Box>
       )}
-    </Template>
+    </Layout>
   );
 });

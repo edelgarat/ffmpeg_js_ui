@@ -3,7 +3,8 @@ import Box from "@material-ui/core/Box";
 import List from "@material-ui/core/List";
 
 import FileMenuItem from "./FileMenuItem";
-import {LocalFileInterface} from "../types";
+
+import { LocalFileInterface } from "types";
 
 interface FileTreeInterface {
   files: LocalFileInterface[];

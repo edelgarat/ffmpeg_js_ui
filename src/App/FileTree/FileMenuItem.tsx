@@ -10,7 +10,7 @@ import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import DownloadIcon from "@material-ui/icons/GetApp";
 
-import { LocalFileInterface } from "../types";
+import { LocalFileInterface } from "types";
 
 interface FileMenuItemInterface {
   files: LocalFileInterface[];

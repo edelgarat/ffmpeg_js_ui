@@ -1,9 +1,9 @@
 import React from "react";
 
 import FFMPEG, { WatcherCallbackDataInterface } from "./library/ffmpeg";
-import useCommand, { CommandInterface } from "./command/useCommand";
+import useCommand, { CommandInterface } from "./useCommand";
 
-import { LocalFileInterface } from "../types";
+import { LocalFileInterface } from "types";
 
 function calculateFileNamePostfix(
   command: CommandInterface,

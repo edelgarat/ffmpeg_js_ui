@@ -8,15 +8,10 @@ import CommandChildComponentWrapper, {
   setCommandArgument,
 } from "../CommandChildComponentWrapper";
 
-import { eventValue } from "../../../helpers";
+import { eventValue } from "libs/helpers";
+import { CodecItem, audioCodecs, videoCodecs } from "dictionaries/codecs";
 
-import {
-  CodecItem,
-  audioCodecs,
-  videoCodecs,
-} from "../../../dictionaries/codecs";
-
-import { CommandControllerInterface } from "../useCommand";
+import { CommandControllerInterface } from "libs/ffmpeg/useCommand";
 
 interface CodecsInterface extends CommandControllerInterface {
   label: string;

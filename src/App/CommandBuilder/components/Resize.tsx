@@ -7,22 +7,22 @@ import CommandChildComponentWrapper, {
   setCommandArgument,
 } from "../CommandChildComponentWrapper";
 
-import { eventValue } from "../../../helpers";
+import { eventValue } from "libs/helpers";
 
-import { CommandControllerInterface } from "../useCommand";
+import { CommandControllerInterface } from "libs/ffmpeg/useCommand";
 
 export default React.memo(function({
   commandArguments,
   setArguments,
 }: CommandControllerInterface) {
-  const { bitrate } = commandArguments.input;
+  const { resize } = commandArguments.output;
   return (
     <CommandChildComponentWrapper
-      node={bitrate}
-      label="Bitrate"
+      node={resize}
+      label="Resize"
       enable={() =>
         setCommandArgument(
-          ["input", "bitrate"],
+          ["output", "resize"],
           commandArguments,
           setArguments,
           ["", ""],
@@ -30,7 +30,7 @@ export default React.memo(function({
       }
       disable={() =>
         setCommandArgument(
-          ["input", "bitrate"],
+          ["output", "resize"],
           commandArguments,
           setArguments,
           null,
@@ -38,15 +38,18 @@ export default React.memo(function({
       }
     >
       {() => (
-        <Box width="300px" display="flex">
-          <Tooltip title="Video bitrate" placement="bottom-start">
+        <Box width="200px" display="flex">
+          <Tooltip
+            title="horizontal pixel size of the video"
+            placement="bottom-start"
+          >
             <TextField
-              label="Video"
-              placeholder="4m"
-              value={bitrate[0]}
+              label="Width"
+              value={resize[0]}
+              placeholder="1920"
               onChange={eventValue(
                 setCommandArgument(
-                  ["input", "bitrate", 0],
+                  ["output", "resize", 0],
                   commandArguments,
                   setArguments,
                 ),
@@ -54,14 +57,17 @@ export default React.memo(function({
             />
           </Tooltip>
           <Box width="10px" />
-          <Tooltip title="Audio bitrate" placement="bottom-start">
+          <Tooltip
+            title="vertical pixel size of the video"
+            placement="bottom-start"
+          >
             <TextField
-              label="Audio"
-              placeholder="128k"
-              value={bitrate[1]}
+              label="Height"
+              value={resize[1]}
+              placeholder="1080"
               onChange={eventValue(
                 setCommandArgument(
-                  ["input", "bitrate", 1],
+                  ["output", "resize", 1],
                   commandArguments,
                   setArguments,
                 ),

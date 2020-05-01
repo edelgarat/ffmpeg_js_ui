@@ -11,13 +11,15 @@ const StyledToolbar = styled(Toolbar)`
   justify-content: space-between;
 `;
 
+interface LayoutInterface {
+  children: JSX.Element;
+  headerAction?: JSX.Element;
+}
+
 export default React.memo(function({
   children,
-  rightElement,
-}: {
-  children: JSX.Element;
-  rightElement?: JSX.Element;
-}) {
+  headerAction,
+}: LayoutInterface) {
   return (
     <>
       <Box flexDirection="column" width="100%" display="flex">
@@ -26,7 +28,7 @@ export default React.memo(function({
             <Typography variant="h6" color="inherit" noWrap>
               FFMPEG Online
             </Typography>
-            {rightElement}
+            {headerAction}
           </StyledToolbar>
         </AppBar>
         {children}

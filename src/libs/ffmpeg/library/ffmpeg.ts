@@ -1,10 +1,10 @@
 import { EventEmitter } from "events";
-import { tsToJs } from "../../../libs/tsToJs";
+
+import { tsToJs } from "libs/tsToJs";
 
 const worker = import("!!raw-loader!./ffmpeg.worker");
 
 export default class FFMPEG extends EventEmitter {
-  private reader: FileReader;
   private worker: Worker;
 
   constructor(private ffmpegModuleString: string) {
@@ -13,7 +13,6 @@ export default class FFMPEG extends EventEmitter {
   }
 
   private async init() {
-    this.reader = new FileReader();
     const workerValue = await worker;
 
     const blob = new Blob([
@@ -54,9 +53,10 @@ ffmpegWorker();
   }
 
   loadFile(name: string, file: File) {
+    const reader = new FileReader();
     const blob = new Blob([file], { type: file.type });
     return new Promise(resolve => {
-      this.reader.onload = event => {
+      reader.onload = event => {
         this.worker.postMessage({
           type: "loadFile",
           data: {
@@ -66,7 +66,7 @@ ffmpegWorker();
         });
         resolve();
       };
-      this.reader.readAsArrayBuffer(blob);
+      reader.readAsArrayBuffer(blob);
     });
   }
 

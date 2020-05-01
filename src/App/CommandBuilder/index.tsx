@@ -6,7 +6,7 @@ import Extract from "./components/Extract";
 import Bitrate from "./components/Bitrate";
 import { AudioCodec, VideoCodec } from "./components/Codecs";
 
-import { CommandControllerInterface } from "./useCommand";
+import { CommandControllerInterface } from "libs/ffmpeg/useCommand";
 
 export default React.memo(function(props: CommandControllerInterface) {
   return (

@@ -7,22 +7,22 @@ import CommandChildComponentWrapper, {
   setCommandArgument,
 } from "../CommandChildComponentWrapper";
 
-import { eventValue } from "../../../helpers";
+import { eventValue } from "libs/helpers";
 
-import { CommandControllerInterface } from "../useCommand";
+import { CommandControllerInterface } from "libs/ffmpeg/useCommand";
 
 export default React.memo(function({
   commandArguments,
   setArguments,
 }: CommandControllerInterface) {
-  const { extractPartition } = commandArguments.input;
+  const { bitrate } = commandArguments.input;
   return (
     <CommandChildComponentWrapper
-      node={extractPartition}
-      label="Extract partition"
+      node={bitrate}
+      label="Bitrate"
       enable={() =>
         setCommandArgument(
-          ["input", "extractPartition"],
+          ["input", "bitrate"],
           commandArguments,
           setArguments,
           ["", ""],
@@ -30,7 +30,7 @@ export default React.memo(function({
       }
       disable={() =>
         setCommandArgument(
-          ["input", "extractPartition"],
+          ["input", "bitrate"],
           commandArguments,
           setArguments,
           null,
@@ -38,15 +38,15 @@ export default React.memo(function({
       }
     >
       {() => (
-        <Box width="350px" display="flex">
-          <Tooltip title="Start trimming video from" placement="bottom-start">
+        <Box width="300px" display="flex">
+          <Tooltip title="Video bitrate" placement="bottom-start">
             <TextField
-              label="Start"
-              placeholder="00:00:00"
-              value={extractPartition[0]}
+              label="Video"
+              placeholder="4m"
+              value={bitrate[0]}
               onChange={eventValue(
                 setCommandArgument(
-                  ["input", "extractPartition", 0],
+                  ["input", "bitrate", 0],
                   commandArguments,
                   setArguments,
                 ),
@@ -54,14 +54,14 @@ export default React.memo(function({
             />
           </Tooltip>
           <Box width="10px" />
-          <Tooltip title="Video trimming length" placement="bottom-start">
+          <Tooltip title="Audio bitrate" placement="bottom-start">
             <TextField
-              label="Length"
-              value={extractPartition[1]}
-              placeholder="00:00:00"
+              label="Audio"
+              placeholder="128k"
+              value={bitrate[1]}
               onChange={eventValue(
                 setCommandArgument(
-                  ["input", "extractPartition", 1],
+                  ["input", "bitrate", 1],
                   commandArguments,
                   setArguments,
                 ),

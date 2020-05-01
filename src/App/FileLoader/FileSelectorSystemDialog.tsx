@@ -11,7 +11,7 @@ interface SystemDialogInterface {
   children: (openDialog: () => void) => JSX.Element;
 }
 
-function SystemDialog({
+function FileSelectorSystemDialog({
   maxSize,
   accept,
   children,
@@ -38,8 +38,8 @@ function SystemDialog({
   return children(() => file.current && file.current.click());
 }
 
-SystemDialog.defaultProps = {
+FileSelectorSystemDialog.defaultProps = {
   accept: FileAccept.VIDEO,
 };
 
-export default React.memo(SystemDialog);
+export default React.memo(FileSelectorSystemDialog);

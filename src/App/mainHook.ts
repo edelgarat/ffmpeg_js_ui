@@ -1,10 +1,10 @@
 import React, { MutableRefObject } from "react";
 import { append, omit, remove, propEq, prop } from "ramda";
 
-import { useFFMPEG } from "./ffmpeg/useFFMPEG";
-import { useForceUpdate } from "./helpers";
+import { useFFMPEG } from "libs/ffmpeg/useFFMPEG";
+import { useForceUpdate } from "libs/helpers";
 
-import { LocalFileInterface } from "./types";
+import { LocalFileInterface } from "types";
 
 export default function(ref: MutableRefObject<HTMLElement>) {
   const update = useForceUpdate();

@@ -4,7 +4,7 @@ import Box from "@material-ui/core/Box";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 
-import { CommandArgumentsInterface } from "./useCommand";
+import { CommandArgumentsInterface } from "libs/ffmpeg/useCommand";
 
 interface CommandChildComponentWrapperInterface {
   label: string;
