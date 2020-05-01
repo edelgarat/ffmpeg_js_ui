@@ -1,29 +1,35 @@
 import { EventEmitter } from "events";
+import { tsToJs } from "../../../libs/tsToJs";
+
+const worker = import("!!raw-loader!./ffmpeg.worker");
 
 export default class FFMPEG extends EventEmitter {
   private reader: FileReader;
   private worker: Worker;
 
-  constructor(ffmpegModuleString: string) {
+  constructor(private ffmpegModuleString: string) {
     super();
-    this.reader = new FileReader();
-
-    this.worker = new Worker(
-      URL.createObjectURL(
-        new Blob([
-          `
-${ffmpegModuleString}
-${document.getElementById("ffmpeg-worker").innerHTML}
-ffmpegForker();
-`,
-        ]),
-      ),
-    );
-
     this.init();
   }
 
-  private init() {
+  private async init() {
+    this.reader = new FileReader();
+    const workerValue = await worker;
+
+    const blob = new Blob([
+      `
+const exports = {};
+${this.ffmpegModuleString}
+${tsToJs(workerValue.default)}
+ffmpegWorker();
+`,
+    ]);
+
+    this.worker = new Worker(URL.createObjectURL(blob));
+    this.prepareWorker();
+  }
+
+  private prepareWorker() {
     this.worker.postMessage(`${document.location.href}static/js/`);
 
     const listener = ({ data: { type, data } }) => {
