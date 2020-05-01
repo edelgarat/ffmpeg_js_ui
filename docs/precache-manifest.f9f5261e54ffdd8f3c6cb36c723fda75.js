@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "d392eb9023a5dce5e0cafad052135a67",
+    "revision": "e4f78a28c6923c34b05032a332508064",
     "url": "/ffmpeg_js_ui/index.html"
   },
   {
-    "revision": "6cda9671c889520195a8",
+    "revision": "0717a2b42d68ff5926ca",
     "url": "/ffmpeg_js_ui/static/css/main.dc0ea610.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/ffmpeg_js_ui/static/js/3.6c27acd7.chunk.js"
   },
   {
-    "revision": "6cda9671c889520195a8",
-    "url": "/ffmpeg_js_ui/static/js/main.6bb09aa2.chunk.js"
+    "revision": "0717a2b42d68ff5926ca",
+    "url": "/ffmpeg_js_ui/static/js/main.0d62fe14.chunk.js"
   },
   {
     "revision": "f3b10d8b573f7d4eb445",
