@@ -26,7 +26,7 @@ export interface CommandControllerInterface {
 
 const commandConfigFromArgument: Record<
   | (keyof CommandArgumentsInterface["input"])
-  | keyof (CommandArgumentsInterface["output"]),
+  | (keyof CommandArgumentsInterface["output"]),
   (data: any) => string[]
 > = {
   bitrate: ([video, audio]) => [

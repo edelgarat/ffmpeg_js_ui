@@ -18,9 +18,18 @@ import CommandBuilder from "./CommandBuilder";
 import mainHook from "./mainHook";
 
 import { eventValue } from "libs/helpers";
-import { videoCodecs } from "dictionaries/codecs";
+import { CodecItem, videoCodecs } from "dictionaries/codecs";
 
-const outputFileExtensions = ["mp4", "avi", "mpg", "mkv"];
+const defaultOutputFileExtensions = ["mp4", "avi", "mpg", "mkv"];
+
+function getCodecFileExtension(selectedVideoCodec: CodecItem) {
+  if (!selectedVideoCodec) return defaultOutputFileExtensions;
+
+  const { supportedOutputs } = selectedVideoCodec;
+  if (supportedOutputs) return supportedOutputs;
+
+  return defaultOutputFileExtensions;
+}
 
 export default React.memo(function() {
   const logRef = React.useRef<HTMLElement>(null);
@@ -120,11 +129,7 @@ export default React.memo(function() {
                     value={commandApi.command.outputFileExtension}
                     onChange={eventValue(commandApi.setOutputExtension)}
                   >
-                    {(
-                      (selectedVideoCodec &&
-                        selectedVideoCodec.supportedOutputs) ||
-                      outputFileExtensions
-                    ).map(name => (
+                    {getCodecFileExtension(selectedVideoCodec).map(name => (
                       <MenuItem key={name} value={name}>
                         {name}
                       </MenuItem>
