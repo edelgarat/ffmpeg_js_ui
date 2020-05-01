@@ -26,15 +26,11 @@ const BaseCodec = React.memo(function({
   items,
   setArguments,
 }: CodecsInterface) {
-  const setType = setCommandArgument(
-    ["input", type],
-    commandArguments,
-    setArguments,
-  );
+  const setType = setCommandArgument([type], commandArguments, setArguments);
 
   return (
     <CommandChildComponentWrapper
-      node={commandArguments.input[type]}
+      node={commandArguments[type]}
       label={label}
       enable={() => setType("copy")}
       disable={() => setType(null)}
@@ -43,7 +39,7 @@ const BaseCodec = React.memo(function({
         <Box width="140px" display="flex">
           <FormControl variant="outlined" fullWidth>
             <Select
-              value={commandArguments.input[type]}
+              value={commandArguments[type]}
               onChange={eventValue(setType)}
             >
               {items.map(({ name, value, disabled }) => (

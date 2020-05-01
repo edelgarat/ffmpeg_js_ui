@@ -20,7 +20,7 @@ import mainHook from "./mainHook";
 import { eventValue } from "libs/helpers";
 import { CodecItem, videoCodecs } from "dictionaries/codecs";
 
-const defaultOutputFileExtensions = ["mp4", "avi", "mpg", "mkv"];
+const defaultOutputFileExtensions = ["mp4", "avi", "mpg", "mkv", "jpg"];
 
 function getCodecFileExtension(selectedVideoCodec: CodecItem) {
   if (!selectedVideoCodec) return defaultOutputFileExtensions;
@@ -46,7 +46,7 @@ export default React.memo(function() {
     run,
   } = mainHook(logRef);
 
-  const videoCodec = commandApi.command.arguments.input.videoCodec;
+  const videoCodec = commandApi.command.arguments.videoCodec;
 
   const selectedVideoCodec = React.useMemo(
     () => videoCodecs.find(propEq("value", videoCodec)),

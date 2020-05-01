@@ -15,26 +15,17 @@ export default React.memo(function({
   commandArguments,
   setArguments,
 }: CommandControllerInterface) {
-  const { bitrate } = commandArguments.input;
+  const { bitrate } = commandArguments;
   return (
     <CommandChildComponentWrapper
       node={bitrate}
       label="Bitrate"
-      enable={() =>
-        setCommandArgument(
-          ["input", "bitrate"],
-          commandArguments,
-          setArguments,
-          ["", ""],
-        )
-      }
+      enable={() => {
+        const data = ["", ""];
+        setCommandArgument(["bitrate"], commandArguments, setArguments, data);
+      }}
       disable={() =>
-        setCommandArgument(
-          ["input", "bitrate"],
-          commandArguments,
-          setArguments,
-          null,
-        )
+        setCommandArgument(["bitrate"], commandArguments, setArguments, null)
       }
     >
       {() => (
@@ -46,7 +37,7 @@ export default React.memo(function({
               value={bitrate[0]}
               onChange={eventValue(
                 setCommandArgument(
-                  ["input", "bitrate", 0],
+                  ["bitrate", 0],
                   commandArguments,
                   setArguments,
                 ),
@@ -61,7 +52,7 @@ export default React.memo(function({
               value={bitrate[1]}
               onChange={eventValue(
                 setCommandArgument(
-                  ["input", "bitrate", 1],
+                  ["bitrate", 1],
                   commandArguments,
                   setArguments,
                 ),

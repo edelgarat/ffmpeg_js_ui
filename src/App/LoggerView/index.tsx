@@ -17,7 +17,7 @@ interface LoggerViewInterface {
 
 export default React.memo(function({ logRef }: LoggerViewInterface) {
   return (
-    <Box flexDirection="column" display="flex" height="100%">
+    <Box flexDirection="column" display="flex" overflow="hidden" flex={1}>
       <Box
         padding="18px"
         display="flex"

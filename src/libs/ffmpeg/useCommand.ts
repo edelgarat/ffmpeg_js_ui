@@ -2,15 +2,11 @@ import React from "react";
 import { assoc } from "ramda";
 
 export interface CommandArgumentsInterface {
-  input: {
-    bitrate?: [string, string];
-    extractPartition?: [string, string];
-    videoCodec?: string;
-    audioCodec?: string;
-  };
-  output: {
-    resize?: [string, string];
-  };
+  bitrate?: [string, string];
+  extractPartition?: [string, string];
+  videoCodec?: string;
+  audioCodec?: string;
+  resize?: [string, string];
 }
 
 export interface CommandInterface {
@@ -25,8 +21,7 @@ export interface CommandControllerInterface {
 }
 
 const commandConfigFromArgument: Record<
-  | (keyof CommandArgumentsInterface["input"])
-  | (keyof CommandArgumentsInterface["output"]),
+  keyof CommandArgumentsInterface,
   (data: any) => string[]
 > = {
   bitrate: ([video, audio]) => [
@@ -41,9 +36,7 @@ const commandConfigFromArgument: Record<
 
 function applyCommandToString(
   key: string,
-  argumentBase:
-    | CommandArgumentsInterface["input"]
-    | CommandArgumentsInterface["output"],
+  argumentBase: CommandArgumentsInterface,
   result: string[],
 ) {
   if (!argumentBase[key]) return;
@@ -57,31 +50,27 @@ function getCommandArray(
 ) {
   const result = [
     "ffmpeg",
-    "-threads",
-    "1",
-    "-y",
+    // "-threads",
+    // "1",
+    // "-y",
     "-loglevel",
     "debug",
-    "-nostdin",
+    // "-nostdin",
   ];
 
   command.inputs.forEach(input => {
     result.push("-i", `${basePath}${input}`);
   });
 
-  result.push("-strict", "-2");
+  // result.push("-strict", "-2");
 
-  Object.keys(command.arguments.input).forEach(key => {
-    applyCommandToString(key, command.arguments.input, result);
+  Object.keys(command.arguments).forEach(key => {
+    applyCommandToString(key, command.arguments, result);
   });
 
   result.push(
     `${basePath}output${fileNamePostfix}.${command.outputFileExtension}`,
   );
-
-  Object.keys(command.arguments.output).forEach(key => {
-    applyCommandToString(key, command.arguments.output, result);
-  });
 
   return result;
 }
@@ -95,11 +84,8 @@ export default function useCommand() {
     inputs: [],
     outputFileExtension: "mp4",
     arguments: {
-      input: {
-        audioCodec: "copy",
-        videoCodec: "copy",
-      },
-      output: {},
+      audioCodec: "copy",
+      videoCodec: "copy",
     },
   }));
 

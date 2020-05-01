@@ -15,14 +15,14 @@ export default React.memo(function({
   commandArguments,
   setArguments,
 }: CommandControllerInterface) {
-  const { extractPartition } = commandArguments.input;
+  const { extractPartition } = commandArguments;
   return (
     <CommandChildComponentWrapper
       node={extractPartition}
       label="Extract partition"
       enable={() =>
         setCommandArgument(
-          ["input", "extractPartition"],
+          ["extractPartition"],
           commandArguments,
           setArguments,
           ["", ""],
@@ -30,7 +30,7 @@ export default React.memo(function({
       }
       disable={() =>
         setCommandArgument(
-          ["input", "extractPartition"],
+          ["extractPartition"],
           commandArguments,
           setArguments,
           null,
@@ -46,7 +46,7 @@ export default React.memo(function({
               value={extractPartition[0]}
               onChange={eventValue(
                 setCommandArgument(
-                  ["input", "extractPartition", 0],
+                  ["extractPartition", 0],
                   commandArguments,
                   setArguments,
                 ),
@@ -61,7 +61,7 @@ export default React.memo(function({
               placeholder="00:00:00"
               onChange={eventValue(
                 setCommandArgument(
-                  ["input", "extractPartition", 1],
+                  ["extractPartition", 1],
                   commandArguments,
                   setArguments,
                 ),

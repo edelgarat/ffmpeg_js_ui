@@ -25,7 +25,12 @@ export default function(ref: MutableRefObject<HTMLElement>) {
     msg => {
       if (!msg) return;
       if (ref.current) {
-        ref.current.innerHTML += msg;
+        ref.current.innerHTML =
+          "---- " +
+          new Date().toUTCString() +
+          "   " +
+          msg +
+          ref.current.innerHTML;
         return;
       }
       console.log(msg);
@@ -79,10 +84,7 @@ export default function(ref: MutableRefObject<HTMLElement>) {
   }
 
   async function uploadFile(file: File) {
-    localFiles.current = append(
-      { name: file.name, file: file },
-      localFiles.current,
-    );
+    localFiles.current = append({ name: file.name, file }, localFiles.current);
     await Promise.all(localFiles.current.map(loadFile));
     update();
   }

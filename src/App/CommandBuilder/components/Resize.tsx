@@ -15,26 +15,16 @@ export default React.memo(function({
   commandArguments,
   setArguments,
 }: CommandControllerInterface) {
-  const { resize } = commandArguments.output;
+  const { resize } = commandArguments;
   return (
     <CommandChildComponentWrapper
       node={resize}
       label="Resize"
       enable={() =>
-        setCommandArgument(
-          ["output", "resize"],
-          commandArguments,
-          setArguments,
-          ["", ""],
-        )
+        setCommandArgument(["resize"], commandArguments, setArguments, ["", ""])
       }
       disable={() =>
-        setCommandArgument(
-          ["output", "resize"],
-          commandArguments,
-          setArguments,
-          null,
-        )
+        setCommandArgument(["resize"], commandArguments, setArguments, null)
       }
     >
       {() => (
@@ -49,7 +39,7 @@ export default React.memo(function({
               placeholder="1920"
               onChange={eventValue(
                 setCommandArgument(
-                  ["output", "resize", 0],
+                  ["resize", 0],
                   commandArguments,
                   setArguments,
                 ),
@@ -67,7 +57,7 @@ export default React.memo(function({
               placeholder="1080"
               onChange={eventValue(
                 setCommandArgument(
-                  ["output", "resize", 1],
+                  ["resize", 1],
                   commandArguments,
                   setArguments,
                 ),
